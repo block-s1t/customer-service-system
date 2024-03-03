@@ -8,7 +8,7 @@ pnpm install
 
 # 给node_modules www 755权限
 chown -R www:www node_modules
-find node_modules -type f -exec chmod 755 {} \
+chmod -R 755 node_modules
 
 # 生成prisma client
 npx prisma generate
@@ -17,8 +17,8 @@ npx prisma generate
 npx prisma db push
 
 # 给prisma/customer-service-system.db 755 www 用户权限
-chmod 755 prisma/customer-service-system.db
 chown www prisma/customer-service-system.db
+chmod 755 prisma/customer-service-system.db
 
 # 检查是否存在.env文件
 if [ -f .env ]; then
@@ -57,19 +57,22 @@ fi
 # 初始化数据库
 pnpm run start:db:init
 
-# 给logs和dist文件夹755 www 用户权限
+# 创建logs文件夹并给予权限
 mkdir logs
 chown -R www:www logs
-find logs -type f -exec chmod 755 {} \
+chmod -R 755 logs
 
+# 删除dist文件夹
 rm -rf dist
 
 # build
 pnpm run build
 
+# 设置dist文件夹权限
 chown -R www:www dist
-find dist -type f -exec chmod 755 {} \
+chmod -R 755 dist
 
+# 启动pm2
 pnpm run pm2
 
 pm2 save --force
