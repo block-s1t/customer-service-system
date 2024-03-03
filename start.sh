@@ -7,8 +7,8 @@ npm install -g pnpm
 pnpm install
 
 # 给node_modules www 755权限
-chmod 755 node_modules
-chown www node_modules
+chown -R www:www node_modules
+find node_modules -type f -exec chmod 755 {} \
 
 # 生成prisma client
 npx prisma generate
@@ -57,29 +57,18 @@ fi
 # 初始化数据库
 pnpm run start:db:init
 
-
-
 # 给logs和dist文件夹755 www 用户权限
+mkdir logs
+chown -R www:www logs
+find logs -type f -exec chmod 755 {} \
 
-if [ -d "logs" ]; then
-    chmod 755 logs
-    chown www logs
-else
-    mkdir logs
-    chmod 755 logs
-    chown www logs
-fi
-
-if [ -d "dist" ]; then
-    rm -rf dist
-fi
+rm -rf dist
 
 # build
 pnpm run build
 
-chmod 755 dist
-chown www dist
-
+chown -R www:www dist
+find dist -type f -exec chmod 755 {} \
 
 pnpm run pm2
 
