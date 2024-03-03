@@ -13,6 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "start:db:init": "ts-node prisma/seed.ts",
+    "pm2": "pm2 start npm --name @customer-service-system -- start",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
